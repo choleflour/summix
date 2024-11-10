@@ -3,14 +3,13 @@ import './loginpage.css';
 export default function LoginPage() {
     return (
         <div className="login-container">
-            <form action="/api/login" method="post" className="login-form">
+            <form action="/preferences" method="post" className="login-form">
                 
                 {/* Logo */}
                 <div className="login-logo">
                     <img src="/logo.png" alt="Logo" style={{ width: '50px', height: 'auto' }} />
                 </div>
-                
-                <h2>Welcome back!</h2>
+            
 
                 <div style={{ marginBottom: '1em', textAlign: 'left', marginTop: '20px' }}>
                     <label>Email:</label>
