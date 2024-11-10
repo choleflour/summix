@@ -41,8 +41,6 @@ export default function LoginPage() {
                           }}
                     />
                 </div>
-{userEmail}
-{userPass}
                 <button type="submit" className="login-button" onClick={() => {signIn(userEmail, userPass); }}>Login</button>
 
                 <div style={{ textAlign: 'center', marginTop: '1em'}}>

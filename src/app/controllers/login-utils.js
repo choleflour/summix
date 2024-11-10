@@ -14,7 +14,11 @@ export function signUp(userEmail, userPass) {
     if(!userEmail.length) {
       return;
     }
-
+    if (userPass.length < 8) {
+      console.error("Password must be at least 8 characters long");
+      alert("Password must be at least 8 characters long");
+      return;
+    }
     createUserWithEmailAndPassword(auth, userEmail, userPass)
     .then((userCredential) => {
       const user = userCredential.user;
@@ -23,12 +27,20 @@ export function signUp(userEmail, userPass) {
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
+      alert(`Failed to Create an Account: ${errorMessage}`);
+
     });
   }
 
 
   export function signIn(userEmail, userPass) {
-
+    if(!userEmail.length) {
+      return;
+    }
+    if (userPass.length < 8) {
+      alert("Password must be at least 8 characters long");
+      return;
+    }
     signInWithEmailAndPassword(auth, userEmail, userPass)
     .then((userCredential) => {
       // Signed in 
@@ -38,6 +50,7 @@ export function signUp(userEmail, userPass) {
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
+      alert(`Sign-in failed: ${errorMessage}`);
     });
   }
   export function authInfo(userEmail, userPass) {

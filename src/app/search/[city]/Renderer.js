@@ -72,7 +72,8 @@ export const Renderer = ({ city }) => {
             }
 
             const script = document.createElement("script");
-            script.src = `https://maps.googleapis.com/maps/api/js?key=APIKEY&v=weekly`;
+            const apiKey = process.env.NEXT_PUBLIC_API_KEY; 
+            script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&v=weekly`;
             script.async = true;
             script.defer = true;
             script.onload = initializeMap;
