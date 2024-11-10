@@ -15,7 +15,7 @@ export function signUp(userEmail, userPass) {
       return;
     }
     if (userPass.length < 8) {
-      console.error("Password must be at least 8 characters long");
+      // console.error("Password must be at least 8 characters long");
       alert("Password must be at least 8 characters long");
       return;
     }

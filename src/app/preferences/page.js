@@ -34,7 +34,7 @@ export default function PreferencesPage() {
 
             <div className="centeredContainer">
                 <h1>Welcome to Summix!</h1>
-                <h2>Let's get to know you first</h2>
+                <h2>Let&apos;s get to know you first</h2>
                 <p>
                     <br /><br />
                     What should we call you?
