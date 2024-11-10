@@ -2,37 +2,8 @@
 
 import Image from "next/image";
 import styles from "./page.module.css";
-import "firebase/firestore"
-import "firebase/auth"
-import { initializeApp } from "firebase/app";
-import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
-import { getAuth, createUserWithEmailAndPassword,signInWithEmailAndPassword} from "firebase/auth";
+import { createUserWithEmailAndPassword,signInWithEmailAndPassword} from "firebase/auth";
 import { useState } from "react";
-
-
-// Import the functions you need from the SDKs you need
-
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyADgWsMVr2ET62sAnXM8mvUUKQbXBXoXoQ",
-  authDomain: "summix-9eff0.firebaseapp.com",
-  projectId: "summix-9eff0",
-  storageBucket: "summix-9eff0.firebasestorage.app",
-  messagingSenderId: "468955979293",
-  appId: "1:468955979293:web:1683a181ad3e96f1ba30f4",
-  measurementId: "G-H4RBT56T2R"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-const auth = getAuth();
-
 
 export default function Home() {
   const [userEmail, setUserEmail] = useState('');
@@ -63,7 +34,6 @@ export default function Home() {
     .then((userCredential) => {
       // Signed in 
       const user = userCredential.user;
-      // ...
     })
     .catch((error) => {
       const errorCode = error.code;
