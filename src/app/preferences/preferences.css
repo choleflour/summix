@@ -1,0 +1,26 @@
+.page{
+    background-color: #ffffff;
+    color: #000000;
+    display: flex;
+    align-items: center;
+    height: 100vh;
+}
+
+.inputBar {
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    width: 340px;
+    margin-top: 7px;
+    margin-bottom: 7px;
+}
+
+
+.centeredContainer {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+}
