@@ -22,7 +22,7 @@ export default function Welcome() {
         <h1 style={{ fontSize: "3rem", marginBottom: "20px", marginTop: "10px"}}>summix</h1>
 
         <a
-          href="/create-account"
+          href="/create"
           style={{
             padding: "10px 20px",
             backgroundColor: "#C8C8C8",

@@ -1,0 +1,47 @@
+body {
+    background-color: #FFFFFF;
+    color: #000000;
+}
+
+.create-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #FFFFFF;
+}
+
+.create-form {
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+}
+
+.create-logo {
+    margin-bottom: 2em;
+    display: flex;
+    justify-content: center;
+}
+
+.create-button {
+    width: 30%;
+    padding: 10px;
+    background-color: #78A378;
+    color: #FFFFFF;
+    border: none;
+    cursor: pointer;
+    border-radius: 20px
+}
+
+.create-button:hover {
+    background-color: #648D64;
+}
+
+.login-link {
+    color: #000000;
+    text-decoration: underline
+}
+
+.login-link:hover {
+    color: #78A378;
+}
