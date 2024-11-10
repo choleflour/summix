@@ -129,8 +129,9 @@ export const Renderer = ({ city }) => {
         <div>
         
         <p className = "pageTitle">Check out these hikes near you!</p>
-        
+        <div ref={mapRef} id="map" className="map"></div>
         <div className="container">
+        
             {businesses.map((e) => (
                 <div className="card" key={e.id}>
                     <p className = "trailName">{e.name}</p>
@@ -144,7 +145,7 @@ export const Renderer = ({ city }) => {
                 </div>
             ))}
             
-            <div ref={mapRef} id="map" className="map"></div>
+            
         </div>
         <button className = "backButton">Back </button>
 
