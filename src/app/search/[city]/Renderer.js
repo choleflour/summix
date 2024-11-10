@@ -16,7 +16,7 @@ export const Renderer = ({ city }) => {
                 //setBusinesses(response.businesses);
 
                 // Sort businesses by review count in descending order
-                const sortedBusinesses = response.businesses.sort((a, b) => b.review_count - a.review_count);
+                const sortedBusinesses = response.businesses.sort((a, b) => b.rating - a.rating);
 
                 setBusinesses(sortedBusinesses);
             });
