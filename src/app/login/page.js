@@ -1,5 +1,5 @@
 "use client";
-
+import {useState} from 'react';
 import { signIn } from '../controllers/login-utils';
 import './loginpage.css';
 
@@ -23,6 +23,9 @@ export default function LoginPage() {
                         name="email"
                         required
                         style={{ width: '100%', padding: '8px', backgroundColor:'#FFFFFF', borderRadius: '12px', marginTop: '7px'}}
+                        onChange={function (e) {
+                            setUserEmail(e.target.value)
+                          }}
                     />
                 </div>
 
@@ -33,10 +36,14 @@ export default function LoginPage() {
                         name="password"
                         required
                         style={{ width: '100%', padding: '8px',  backgroundColor:'#FFFFFF', borderRadius: '12px', marginTop: '7px', marginBottom: '10px'}}
+                        onChange={function (e) {
+                            setUserPass(e.target.value)
+                          }}
                     />
                 </div>
-
-                <button type="submit" className="login-button" onClick={signIn}>Login</button>
+{userEmail}
+{userPass}
+                <button type="submit" className="login-button" onClick={() => {signIn(userEmail, userPass); }}>Login</button>
 
                 <div style={{ textAlign: 'center', marginTop: '1em'}}>
                     <a href="/forgot-password" className="forgot-password-link">

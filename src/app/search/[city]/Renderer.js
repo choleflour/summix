@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from "react";
-
+import './styles.css';
 export const Renderer = ({city}) => {
     const [businesses, setBusinesses] = useState([]);
 
@@ -18,9 +18,12 @@ export const Renderer = ({city}) => {
             });
     }, [city]);
 
-    return <div>{businesses && businesses.map(e => <div key=
+    return <div className="container">{businesses && businesses.map(e => <div  className="card" key=
         {e.id}>
         <h1>{e.name}</h1>
-        <img className="image" src={e.image_url}/>
+        {e.image_url && (
+                    <img className="image" src={e.image_url} alt={`${e.name} image`} />
+                )}
+       
     </div>)}</div>
 }

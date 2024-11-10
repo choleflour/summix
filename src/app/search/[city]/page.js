@@ -1,10 +1,9 @@
-import { Renderer } from "./renderer";
+import { Renderer } from "./Renderer";
 
 export default async function Search ({params})  {
     const city = (await params).city;
 
     return <div>
-        {city}
         <Renderer city={city} />
     </div>
 }
