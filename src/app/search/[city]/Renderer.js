@@ -5,7 +5,22 @@ import './styles.css';
 
 export const Renderer = ({ city }) => {
     const [businesses, setBusinesses] = useState([]);
+    const [userLocation, setUserLocation] = useState(null);
     const mapRef = useRef(null); // Create a ref for the map container
+
+
+    useEffect(() => {
+        // Get user's current location
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const { latitude, longitude } = position.coords;
+                setUserLocation({ lat: latitude, lng: longitude });
+                console.log("User's Location:", { latitude, longitude });
+            },
+            (error) => console.error("Error fetching location", error),
+            { enableHighAccuracy: true }
+        );
+    }, []);
 
     useEffect(() => {
         // Fetch businesses based on city prop change
@@ -18,9 +33,34 @@ export const Renderer = ({ city }) => {
                 // Sort businesses by review count in descending order
                 const sortedBusinesses = response.businesses.sort((a, b) => b.rating - a.rating);
 
+                if (userLocation) {
+                    sortedBusinesses.forEach(business => {
+                        if (business.coordinates) {
+                            business.distance = calculateDistance(
+                                userLocation.lat,
+                                userLocation.lng,
+                                business.coordinates.latitude,
+                                business.coordinates.longitude
+                            );
+                        }
+                    });
+                }
+
                 setBusinesses(sortedBusinesses);
             });
-    }, [city]);
+    }, [city, userLocation]);
+
+    const calculateDistance = (lat1, lon1, lat2, lon2) => {
+        const R = 3958.8; // Radius of Earth in miles
+        const dLat = (lat2 - lat1) * (Math.PI / 180);
+        const dLon = (lon2 - lon1) * (Math.PI / 180);
+        const a = 
+            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return R * c;
+    };
 
     useEffect(() => {
         // Load Google Maps API script dynamically
@@ -44,11 +84,24 @@ export const Renderer = ({ city }) => {
             // Ensure the map div and Google Maps API are available
             if (!mapRef.current || !window.google) return;
 
+            const mapCenter = userLocation || 
+                              { lat: businesses[0]?.coordinates.latitude || 37.7749, lng: businesses[0]?.coordinates.longitude || -122.4194 };
+
+
             // Initialize the Google Map
             const map = new window.google.maps.Map(mapRef.current, {
                 center: { lat: businesses[0]?.coordinates.latitude || 37.7749, lng: businesses[0]?.coordinates.longitude || -122.4194 },
                 zoom: 12,
             });
+
+            if (userLocation) {
+                new window.google.maps.Marker({
+                    position: userLocation,
+                    map,
+                    title: "You are here",
+                    icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png" // Use a distinct icon for user's location
+                });
+            }
 
             // Add markers for each business
             businesses.forEach((business) => {
@@ -69,7 +122,7 @@ export const Renderer = ({ city }) => {
         if (businesses.length > 0) {
             loadGoogleMaps();
         }
-    }, [businesses]);
+    }, [businesses, userLocation]);
 
     return (
         <div className="container">
@@ -82,6 +135,7 @@ export const Renderer = ({ city }) => {
                     {e.rating && <p>Rating: {e.rating}</p>}
                     <p>Latitude: {e.coordinates.latitude}</p>
                     <p>Longitude: {e.coordinates.longitude}</p>
+                    {e.distance && <p>Distance: {e.distance.toFixed(2)} miles</p>}
                 </div>
             ))}
             
