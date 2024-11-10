@@ -16,8 +16,8 @@
  
  
  .backButton {
-    margin-top: 20px;
-    margin-left: 170px;
+    margin-bottom: 20px;
+    margin-left: 155px;
     width: 10%;
     padding: 10px;
     background-color: #78A378;
@@ -116,6 +116,7 @@
     font-weight: bold;
  }
   .pageTitle {
+    margin-top: 20px;
     text-align: center;
     font-size: 24px;
     font-weight: bold;

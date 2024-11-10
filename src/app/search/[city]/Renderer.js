@@ -126,15 +126,15 @@ export const Renderer = ({ city }) => {
 
     return (
         <div>
-        <button className = "backButton">Back</button>
+        
         <p className = "pageTitle">Check out these hikes near you!</p>
         
         <div className="container">
             {businesses.map((e) => (
                 <div className="card" key={e.id}>
-                    <h1>{e.name}</h1>
-                    {e.rating && <p>Rating: {e.rating}</p>}
-                    {e.distance && <p>Distance: {e.distance.toFixed(2)} miles</p>}
+                    <p className = "trailName">{e.name}</p>
+                    {e.rating && <p>Rating: {e.rating} &#11088;</p>}
+                    {e.distance && <p>Only {e.distance.toFixed(2)} miles away</p>}
                     {e.image_url && (
                         <img className="image" src={e.image_url} alt={`${e.name} image`} />
                     )}
@@ -145,6 +145,7 @@ export const Renderer = ({ city }) => {
             
             <div ref={mapRef} id="map" className="map"></div>
         </div>
+        <button className = "backButton">Back </button>
 
         </div>
     );
