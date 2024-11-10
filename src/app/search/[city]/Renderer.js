@@ -24,6 +24,13 @@ export const Renderer = ({city}) => {
         {e.image_url && (
                     <img className="image" src={e.image_url} alt={`${e.name} image`} />
                 )}
+       {e.rating && (
+        <p>
+            Rating: {e.rating}
+        </p>
+        )}
+        <p>Latitude: {e.coordinates.latitude}</p>
+        <p>Longitude: {e.coordinates.longitude}</p>
        
     </div>)}</div>
 }
