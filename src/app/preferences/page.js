@@ -12,7 +12,8 @@ export default function PreferencesPage() {
     // console.log(auth, "HEY THIS IS AUTH")
 
     async function submit() {
-        if (!auth.currentUser.uid) {
+        console.log(auth.currentUser)
+        if (!auth.currentUser?.uid) {
             alert('hey! stop! u gotta sign in!!!');
             return;
         }

@@ -27,9 +27,8 @@ export function signUp() {
   }
 
 
-  export function signIn() {
-    const [userEmail, setUserEmail] = useState('');
-    const [userPass, setUserPass] = useState('');
+  export function signIn(userEmail, userPass) {
+
     signInWithEmailAndPassword(auth, userEmail, userPass)
     .then((userCredential) => {
       // Signed in 

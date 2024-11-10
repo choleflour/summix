@@ -1,10 +1,14 @@
+"use client";
+
 import { signIn } from '../controllers/login-utils';
 import './loginpage.css';
 
 export default function LoginPage() {
+    const [userEmail, setUserEmail] = useState('');
+    const [userPass, setUserPass] = useState('');
     return (
         <div className="login-container">
-            <form action="/preferences" method="post" className="login-form">
+            <form onSubmit={e => e.preventDefault()} className="login-form">
                 
                 {/* Logo */}
                 <div className="login-logo">
