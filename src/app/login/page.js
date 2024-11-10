@@ -1,3 +1,4 @@
+import { signIn } from '../controllers/login-utils';
 import './loginpage.css';
 
 export default function LoginPage() {
@@ -31,7 +32,7 @@ export default function LoginPage() {
                     />
                 </div>
 
-                <button type="submit" className="login-button">Login</button>
+                <button type="submit" className="login-button" onClick={signIn}>Login</button>
 
                 <div style={{ textAlign: 'center', marginTop: '1em'}}>
                     <a href="/forgot-password" className="forgot-password-link">

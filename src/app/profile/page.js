@@ -2,6 +2,8 @@
 import { useState } from "react";
 import { auth, db } from '../controllers/firebase'
 import { doc, setDoc } from "firebase/firestore";
+import { redirect } from 'next/navigation'
+// import Search from "../search/page";
 
 export default function Profile() {
   const [name, setName] = useState('');
@@ -39,7 +41,7 @@ export default function Profile() {
         setState(e.target.value)
       }}></input>
       <button onClick={submit}>Submit</button>
-      <Search city={city} />
+      {/* <Search city={city} /> */}
     </div>
 
   );
