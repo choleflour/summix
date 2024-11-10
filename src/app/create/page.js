@@ -1,9 +1,13 @@
+'use client';
 import './create.css';
-
+import {useState} from 'react';
+import { signUp } from '../controllers/login-utils';
 export default function CreateAccount() {
+    const [userEmail, setUserEmail] = useState('');
+    const [userPass, setUserPass] = useState('');
     return(
         <div className="create-container">
-            <form action="/preferences" method="post" className="create-form">
+            <form onSubmit={e => e.preventDefault()} className="create-form">
                 
                 {/* Logo */}
                 <div className="create-logo">
@@ -18,6 +22,9 @@ export default function CreateAccount() {
                         name="email"
                         required
                         style={{ width: '100%', padding: '8px', backgroundColor:'#FFFFFF', borderRadius: '12px', marginTop: '7px'}}
+                        onChange={function (e) {
+                            setUserEmail(e.target.value)
+                          }}
                     />
                 </div>
 
@@ -28,10 +35,13 @@ export default function CreateAccount() {
                         name="password"
                         required
                         style={{ width: '100%', padding: '8px',  backgroundColor:'#FFFFFF', borderRadius: '12px', marginTop: '7px', marginBottom: '10px'}}
+                        onChange={function (e) {
+                            setUserPass(e.target.value)
+                          }}
                     />
                 </div>
 
-                <button type="submit" className="create-button">Create Account</button>
+                <button type="submit" className="create-button" onClick={() => {signUp(userEmail, userPass); }}>Create Account</button>
 
                 <div style={{ textAlign: 'center', marginTop: '1em'}}>
                     <a href="/login" className="login-link">

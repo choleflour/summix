@@ -18,7 +18,7 @@ export function signUp(userEmail, userPass) {
     createUserWithEmailAndPassword(auth, userEmail, userPass)
     .then((userCredential) => {
       const user = userCredential.user;
-      // ...
+      window.location.href = '/preferences';
     })
     .catch((error) => {
       const errorCode = error.code;
