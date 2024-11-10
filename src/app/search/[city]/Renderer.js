@@ -13,7 +13,12 @@ export const Renderer = ({ city }) => {
             .then((response) => response.json())
             .then((response) => {
                 console.log("Yelp API Response", response);
-                setBusinesses(response.businesses);
+                //setBusinesses(response.businesses);
+
+                // Sort businesses by review count in descending order
+                const sortedBusinesses = response.businesses.sort((a, b) => b.review_count - a.review_count);
+
+                setBusinesses(sortedBusinesses);
             });
     }, [city]);
 
