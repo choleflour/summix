@@ -89,6 +89,8 @@ export default function PreferencesPage() {
                     <option value='Wisconsin'>Wisconsin</option>
                     <option value='Wyoming'>Wyoming</option>
                 </select>
+                <br />
+                <button className="button">Next</button>
             </p>
             
         </div>

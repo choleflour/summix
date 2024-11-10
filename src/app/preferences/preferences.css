@@ -16,6 +16,15 @@
     margin-bottom: 7px;
 }
 
+.button {
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #78A378;
+    border-radius: 12px;
+    width: 70px;
+    margin-top: 7px;
+    margin-bottom: 7px;
+}
 
 .centeredContainer {
     position: absolute;
