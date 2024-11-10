@@ -120,7 +120,7 @@ export default function PreferencesPage() {
                         <option value='Wyoming'>Wyoming</option>
                     </select>
                 </p>
-                <button onClick={submit}>Submit</button>
+                <button className="submit-button" onClick={submit}>Submit</button>
                 
             </div>
 

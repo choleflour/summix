@@ -30,7 +30,8 @@ export default function Welcome() {
             textDecoration: "none",
             borderRadius: "20px",
             textAlign: "center",
-            marginTop: "20px"
+            marginTop: "20px",
+            width: '100%'
           }}
         >
           Create an account
@@ -44,9 +45,11 @@ export default function Welcome() {
             textDecoration: "none",
             borderRadius: "20px",
             textAlign: "center",
+            width: '100%',
+            cursor: 'pointer'
           }}
         >
-          Log in
+          Login
         </a>
       </div>
     </div>

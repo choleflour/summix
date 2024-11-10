@@ -16,19 +16,20 @@
     margin-bottom: 7px;
 }
 
-.button {
-    padding: 8px;
-    font-size: 16px;
-    border: 1px solid #78A378;
-    border-radius: 12px;
-    width: 70px;
-    margin-top: 7px;
-    margin-bottom: 7px;
+.submit-button {
+    width: 30%;
+    padding: 10px;
+    background-color: #78A378;
+    color: #FFFFFF;
+    border: none;
+    cursor: pointer;
+    border-radius: 20px;
+    margin-top: 20px;
 }
 
 .centeredContainer {
     position: absolute;
-    top: 30%;
+    top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
     padding: 20px;
