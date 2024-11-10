@@ -125,21 +125,27 @@ export const Renderer = ({ city }) => {
     }, [businesses, userLocation]);
 
     return (
+        <div>
+        <button className = "backButton">Back</button>
+        <p className = "pageTitle">Check out these hikes near you!</p>
+        
         <div className="container">
             {businesses.map((e) => (
                 <div className="card" key={e.id}>
                     <h1>{e.name}</h1>
+                    {e.rating && <p>Rating: {e.rating}</p>}
+                    {e.distance && <p>Distance: {e.distance.toFixed(2)} miles</p>}
                     {e.image_url && (
                         <img className="image" src={e.image_url} alt={`${e.name} image`} />
                     )}
-                    {e.rating && <p>Rating: {e.rating}</p>}
-                    <p>Latitude: {e.coordinates.latitude}</p>
-                    <p>Longitude: {e.coordinates.longitude}</p>
-                    {e.distance && <p>Distance: {e.distance.toFixed(2)} miles</p>}
+                    {/* <p>Latitude: {e.coordinates.latitude}</p>
+                    <p>Longitude: {e.coordinates.longitude}</p> */}
                 </div>
             ))}
             
             <div ref={mapRef} id="map" className="map"></div>
+        </div>
+
         </div>
     );
 };
