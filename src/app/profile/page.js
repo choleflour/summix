@@ -3,45 +3,42 @@ import { useState } from "react";
 import { auth, db } from '../controllers/firebase'
 import { doc, setDoc } from "firebase/firestore";
 import { redirect } from 'next/navigation'
-// import Search from "../search/page";
+import Search from "../search/page";
 
 export default function Profile() {
-  const [name, setName] = useState('');
-  const [city, setCity] = useState('');
-  const [state, setState] = useState('');
+//   const [name, setName] = useState('');
+//   const [city, setCity] = useState('');
+//   const [state, setState] = useState('');
 
-  // console.log(auth, "HEY THIS IS AUTH")
+//   // console.log(auth, "HEY THIS IS AUTH")
 
-  async function submit() {
-    if (!auth.currentUser.uid) {
-      alert('hey! stop! u gotta sign in!!!');
-      return;
-    }
+//   async function submit() {
+//     if (!auth.currentUser.uid) {
+//       alert('hey! stop! u gotta sign in!!!');
+//       return;
+//     }
 
-    const data = {
-      "name": name,
-      "city": city,
-      "state": state,
-      "hiked": [],
-      "uid": auth.currentUser.uid
-    }
+//     const data = {
+//       "name": name,
+//       "city": city,
+//       "state": state,
+//       "hiked": [],
+//       "uid": auth.currentUser.uid
+//     }
     
-    await setDoc(doc(db, "users", auth.currentUser.uid), data);
-  }
-
+//     await setDoc(doc(db, "users", auth.currentUser.uid), data);
+//   }
+// 
   return (
     <div>
-      <input placeholder="name" value={name} onChange={function (e) {
-        setName(e.target.value)
-      }}></input>
-      <input id="city" placeholder="city" value={city} onChange={function (e) {
-        setCity(e.target.value);
-      }}></input>
-      <input placeholder="state" value={state} onChange={function (e) {
-        setState(e.target.value)
-      }}></input>
-      <button onClick={submit}>Submit</button>
-      {/* <Search city={city} /> */}
+        <h2>Name</h2>
+        <p>email/social</p>
+        <h2>Past Hikes</h2>
+        <div>
+            <ol>hike1 name</ol>
+            <ol>hike2 name</ol>
+        </div>
+       
     </div>
 
   );

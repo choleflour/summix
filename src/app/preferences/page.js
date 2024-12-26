@@ -1,6 +1,6 @@
 "use client";
 import styles from "./preferences.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { auth, db } from '../controllers/firebase';
 import { doc, setDoc } from "firebase/firestore";
 import { redirect } from 'next/navigation';
@@ -8,10 +8,27 @@ export default function PreferencesPage() {
     const [name, setName] = useState('');
     const [city, setCity] = useState('');
     const [state, setState] = useState('');
+    const [loc, setLoc] = useState(false);
+    const [userLocation, setUserLocation] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
 
-    // console.log(auth, "HEY THIS IS AUTH")
+    function getLocation () {
+            // Get user's current location
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const { latitude, longitude } = position.coords;
+                setUserLocation({ lat: latitude, lng: longitude });
+            },
+            (error) => console.error("Error fetching location", error),
+            { enableHighAccuracy: true }
+        );
+        setLoc(true);
+
+    }
 
     async function submit() {
+        // const router = useRouter();
+
         console.log(auth.currentUser)
         if (!auth.currentUser?.uid) {
             alert('hey! stop! u gotta sign in!!!');
@@ -21,17 +38,48 @@ export default function PreferencesPage() {
         const data = {
             "name": name,
             "city": city,
+            "location": userLocation,
             "state": state,
             "hiked": [],
+            "liked": [],
             "uid": auth.currentUser.uid
         }
-
+        // submit data to firestore
         await setDoc(doc(db, "users", auth.currentUser.uid), data);
-        redirect('/search/'+ city);
+        
+
+        let redirectUrl = "/search/";
+
+        if (!userLocation) {
+            if (loc) {
+                setIsLoading(true); // Show the loader
+            } else {
+                alert('location is required');
+            }
+            return;
+
+            
+        } else {
+            redirectUrl += userLocation.lat + '/' + userLocation.lng;
+            console.log("Redirecting to:", redirectUrl);
+            redirect(redirectUrl);
+        }
+        // submit --> load --> next page
+
     }
+
+    // Hide loader and redirect when userLocation is set
+    useEffect(() => {
+        if (userLocation && isLoading) {
+            let redirectUrl = "/search/" + userLocation.lat + "/" + userLocation.lng;
+            setIsLoading(false); // Hide the loader
+            redirect(redirectUrl);
+        }
+    }, [userLocation, isLoading]);
+
     return (
         <div className="page">
-
+            {isLoading && <div id="loader"></div>}
             <div className="centeredContainer">
                 <h1>Welcome to Summix!</h1>
                 <h2>Let&apos;s get to know you first</h2>
@@ -62,6 +110,8 @@ export default function PreferencesPage() {
                             setCity(e.target.value);
                         }}
                     />
+                    
+                    <button onClick={getLocation}>Use My Location</button>
 
                     <br />
                     <select onChange={function (e) {
