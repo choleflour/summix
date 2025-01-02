@@ -1,12 +1,7 @@
-
 'use client';
 import { createUserWithEmailAndPassword,signInWithEmailAndPassword} from "firebase/auth";
-import { useState } from "react";
 import {auth} from "./firebase";
-import { redirect, useRouter } from 'next/navigation';
-// const [userEmail, setUserEmail] = useState('');
-// const [userPass, setUserPass] = useState('');
-  // const userEmail = useState(''); // => [value of variable, function to set that variable]
+
 
 export function signUp(userEmail, userPass) {
     console.log(userEmail);
@@ -45,7 +40,8 @@ export function signUp(userEmail, userPass) {
     .then((userCredential) => {
       // Signed in 
       const user = userCredential.user;
-      window.location.href = '/preferences';
+      window.location.href = '/profile'; //routing
+      // window.location.href = '/preferences';
     })
     .catch((error) => {
       const errorCode = error.code;

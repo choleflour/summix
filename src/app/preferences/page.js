@@ -5,13 +5,14 @@ import { auth, db } from '../controllers/firebase';
 import { doc, setDoc } from "firebase/firestore";
 import { redirect } from 'next/navigation';
 export default function PreferencesPage() {
+    // figure out a way to remember or get the name if possible
     const [name, setName] = useState('');
     const [city, setCity] = useState('');
     const [state, setState] = useState('');
     const [loc, setLoc] = useState(false);
     const [userLocation, setUserLocation] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
-
+    const imageArr = ["walrus.png", "dog.png", "chicken.png", "rabbit.png", "snake.png", "wolf.png", "chameleon.png"];
     function getLocation () {
             // Get user's current location
         navigator.geolocation.getCurrentPosition(
@@ -25,6 +26,10 @@ export default function PreferencesPage() {
         setLoc(true);
 
     }
+    // min, max inclusive
+    function generateRandomInteger(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
 
     async function submit() {
         // const router = useRouter();
@@ -35,6 +40,7 @@ export default function PreferencesPage() {
             return;
         }
 
+
         const data = {
             "name": name,
             "city": city,
@@ -42,10 +48,12 @@ export default function PreferencesPage() {
             "state": state,
             "hiked": [],
             "liked": [],
-            "uid": auth.currentUser.uid
+            "uid": auth.currentUser.uid,
+            "image": imageArr[generateRandomInteger(0, imageArr.length - 1)]
         }
         // submit data to firestore
         await setDoc(doc(db, "users", auth.currentUser.uid), data);
+        console.log("image: ", data.image);
         
 
         let redirectUrl = "/search/";

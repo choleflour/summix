@@ -1,45 +1,111 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { auth, db } from '../controllers/firebase'
-import { doc, setDoc } from "firebase/firestore";
-import { redirect } from 'next/navigation'
-import Search from "../search/page";
-
+import { doc, setDoc, getDoc } from "firebase/firestore";
+import { redirect } from 'next/navigation';
+import './styles.css'
 export default function Profile() {
-//   const [name, setName] = useState('');
-//   const [city, setCity] = useState('');
-//   const [state, setState] = useState('');
+    const [name, setName] = useState('');
+    const [city, setCity] = useState('');
+    const [state, setState] = useState('');
+    const [hiked, setHiked] = useState([]);
+    const [liked, setLiked] = useState([]);
+    const [image, setImage] = useState("wolf.png");
 
-//   // console.log(auth, "HEY THIS IS AUTH")
 
-//   async function submit() {
-//     if (!auth.currentUser.uid) {
-//       alert('hey! stop! u gotta sign in!!!');
-//       return;
-//     }
+    async function fetchData() {
+        console.log(auth.currentUser)
+        if (!auth.currentUser?.uid) {
+            alert('hey! stop! u gotta sign in!!!');
+            return;
+        }
+        const docRef = doc(db, "users", auth.currentUser.uid);
+        const docSnap = await getDoc(docRef);
+        
+        if (docSnap.exists()) {
+            // console.log("Document data:", docSnap.data());
+            const user = docSnap.data()
+            
+            setName(user.name);
+            setState(user.state);
+            setCity(user.city);
+            setHiked(user.hiked);
+            setLiked(user.liked);
+            setImage(user.image);
 
-//     const data = {
-//       "name": name,
-//       "city": city,
-//       "state": state,
-//       "hiked": [],
-//       "uid": auth.currentUser.uid
-//     }
+        } else {
+            // docSnap.data() will be undefined in this case
+            alert("no user info!");
+        }
+    }
+
+
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged((user) => {
+            if (user) {
+                console.log("User logged in:", user);
+                fetchData(); // Fetch data only when user logs in
+            } else {
+                console.log("User not logged in");
+            }
+        });
+
+        // Cleanup listener on unmount
+        return () => unsubscribe();
+    }, []); // Empty dependency array ensures this runs only once
+
     
-//     await setDoc(doc(db, "users", auth.currentUser.uid), data);
-//   }
-// 
-  return (
-    <div>
-        <h2>Name</h2>
-        <p>email/social</p>
-        <h2>Past Hikes</h2>
-        <div>
-            <ol>hike1 name</ol>
-            <ol>hike2 name</ol>
-        </div>
-       
-    </div>
+  
 
+  return (
+    // <div>
+    //     <h2>Name {name}</h2>
+    //     <p>email/social</p>
+    //     <h2>Past Hikes</h2>
+    //     <img src={image} alt=""/>
+    //     <div>
+    //         <ol>
+
+    //         {hiked.map((hike, index)=>(
+    //             <li key={index}>{hike}</li>
+    //         ))}
+    //         </ol>
+    //     </div>
+
+    // </div>
+      <div className="profile-container">
+          <div className="profile-left">
+              <img className="profile-avatar" src={image} alt="Avatar" />
+              <h2>{name}</h2>
+              <p>Email/Social</p>
+              <p>{city}, {state}</p>
+          </div>
+          <div className="profile-right">
+              <div className="profile-header">
+              </div>
+              <div className="profile-hikes">
+                  <h3>Past Hikes</h3>
+                  <ol>
+                      {hiked.map((hike, index) => (
+                          <li key={index}>{hike}</li>
+                      ))}
+                  </ol>
+              </div>
+            
+              <div className="profile-hikes">
+                  <h3>Want to Go</h3>
+                  <ol>
+                      {liked.map((like, index) => (
+                          <li key={index}>{like}</li>
+                      ))}
+                  </ol>
+              </div>
+          </div>
+          <div className="bottom-buttons">
+              <button className="button-edit" onClick={()=>{console.log("edit"); redirect("/settings");}}>Edit Profile</button>
+              <button className="button-browse">Browse</button>
+              <button className="button-search">Search</button>
+          </div>
+      </div>
   );
 }

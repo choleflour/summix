@@ -10,7 +10,6 @@ export default function LoginPage() {
         <div className="login-container">
             <form onSubmit={e => e.preventDefault()} className="login-form">
                 
-                {/* Logo */}
                 <div className="login-logo">
                     <img src="/logo.png" alt="Logo" style={{ width: '50px', height: 'auto' }} />
                 </div>
