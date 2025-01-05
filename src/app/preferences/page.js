@@ -13,6 +13,7 @@ export default function PreferencesPage() {
     const [userLocation, setUserLocation] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const imageArr = ["walrus.png", "dog.png", "chicken.png", "rabbit.png", "snake.png", "wolf.png", "chameleon.png"];
+    const [email, setEmail] = useState('');
     function getLocation () {
             // Get user's current location
         navigator.geolocation.getCurrentPosition(
@@ -32,57 +33,59 @@ export default function PreferencesPage() {
     }
 
     async function submit() {
-        // const router = useRouter();
-
-        console.log(auth.currentUser)
+        console.log(auth.currentUser);
         if (!auth.currentUser?.uid) {
             alert('hey! stop! u gotta sign in!!!');
             return;
         }
-
-
-        const data = {
-            "name": name,
-            "city": city,
-            "location": userLocation,
-            "state": state,
-            "hiked": [],
-            "liked": [],
-            "uid": auth.currentUser.uid,
-            "image": imageArr[generateRandomInteger(0, imageArr.length - 1)]
-        }
-        // submit data to firestore
-        await setDoc(doc(db, "users", auth.currentUser.uid), data);
-        console.log("image: ", data.image);
-        
-
-        let redirectUrl = "/search/";
-
-        if (!userLocation) {
-            if (loc) {
-                setIsLoading(true); // Show the loader
-            } else {
-                alert('location is required');
-            }
+    
+        if (!loc) {
+            alert("location is required");
             return;
-
-            
-        } else {
-            redirectUrl += userLocation.lat + '/' + userLocation.lng;
-            console.log("Redirecting to:", redirectUrl);
-            redirect(redirectUrl);
         }
-        // submit --> load --> next page
-
+    
+        // Start loader and wait for userLocation to be updated
+        setIsLoading(true); 
+        console.log("waiting for userLocation...");
     }
-
-    // Hide loader and redirect when userLocation is set
+    
     useEffect(() => {
-        if (userLocation && isLoading) {
-            let redirectUrl = "/search/" + userLocation.lat + "/" + userLocation.lng;
-            setIsLoading(false); // Hide the loader
-            redirect(redirectUrl);
+        async function handleUserLocationUpdate() {
+            if (isLoading && userLocation) {
+                // Submit data to Firestore
+                const data = {
+                    name: name,
+                    city: city,
+                    location: userLocation,
+                    state: state,
+                    hiked: [],
+                    liked: [],
+                    uid: auth.currentUser.uid,
+                    image: imageArr[generateRandomInteger(0, imageArr.length - 1)],
+                    email: email,
+                };
+    
+                try {
+                    console.log("Starting data submission to Firestore...");
+                    await setDoc(doc(db, "users", auth.currentUser.uid), data);
+                    console.log("Data successfully submitted to Firestore:", data);
+    
+                    // Redirect after successful save
+                    const redirectUrl = `/search/${userLocation.lat}/${userLocation.lng}`;
+                    console.log("Redirecting to:", redirectUrl);
+    
+                    setIsLoading(false); // Stop loader
+                    window.location.href = redirectUrl; // Perform redirection
+                } catch (error) {
+                    console.log("ERR", error);
+                    console.error("Error during Firestore operation:", error);
+                    alert("Error submitting data. Please try again.");
+                    setIsLoading(false); // Stop loader even on error
+                }
+            }
         }
+    
+        handleUserLocationUpdate();
     }, [userLocation, isLoading]);
 
     return (
@@ -97,6 +100,10 @@ export default function PreferencesPage() {
                     <br />
                     <input type="text" placeholder="Enter your name" className="inputBar" onChange={(e) =>
                         setName(e.target.value)} />
+                    <br /><br />
+                    <input type="text" placeholder="Enter your email" className="inputBar" onChange=
+                    {(e) =>
+                        setEmail(e.target.value)} />
                     <br /><br />
                     What are your pronouns?
                     <br />
@@ -118,7 +125,7 @@ export default function PreferencesPage() {
                             setCity(e.target.value);
                         }}
                     />
-                    
+                    <br /><br />
                     <button onClick={getLocation}>Use My Location</button>
 
                     <br />

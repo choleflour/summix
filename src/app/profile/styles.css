@@ -19,6 +19,9 @@ body {
     width: 600px;
     padding: 20px;
 }
+/* .profile-container p {
+    color: #b3b3b3;
+} */
 
 .profile-left {
     flex: 1.2; /* Slightly larger than right side */
@@ -59,7 +62,7 @@ body {
 
 .profile-header p {
     padding-top: 5px;
-    color: #666;
+    color: #b3b3b3;
     font-size: 0.9rem;
 }
 
@@ -94,6 +97,7 @@ body {
     display: flex;
     gap: 10px;
 }
+
 
 .button-edit,
 .button-browse,

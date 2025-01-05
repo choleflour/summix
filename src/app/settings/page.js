@@ -14,7 +14,8 @@ export default function Profile() {
         state: "",
         hiked: [],
         liked: [],
-        image: "wolf.png",
+        image: ".png",
+        email: "",
     });
 
     const [editingFields, setEditingFields] = useState({}); // Tracks which fields are being edited
@@ -63,11 +64,14 @@ export default function Profile() {
                 hiked: user.hiked,
                 liked: user.liked,
                 image: user.image,
+                email: user.email,
             });
         } else {
             alert("no user info!");
         }
     }
+
+    
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -81,17 +85,13 @@ export default function Profile() {
     }, []);
 
     async function saveChanges() {
-        const { name, city, state, hiked, liked, image } = profileData;
-
-        await setDoc(doc(db, "users", auth.currentUser.uid), {
-            name,
-            city,
-            state,
-            hiked,
-            liked,
-            image,
-        });
-
+        // const { name, city, state, hiked, liked, image } = profileData;
+        try {
+            await setDoc(doc(db, "users", auth.currentUser.uid), profileData);
+        } catch (error) {
+            console.error("Error writing document: ", error);
+        }
+        
         let redirectUrl = "/profile";
         redirect(redirectUrl);
     }
@@ -105,6 +105,7 @@ export default function Profile() {
                         {editingFields.name ? (
                             <input
                                 type="text"
+                                placeholder="name"
                                 value={profileData.name}
                                 onChange={(e) => handleInputChange("name", e.target.value)}
                                 onBlur={() => handleInputBlur("name")}
@@ -121,10 +122,34 @@ export default function Profile() {
                             <img src="edit.png" alt="edit" />
                         </button>
                     </div>
+
+                    <div className="profile-field">
+                        {editingFields.email ? (
+                            <input
+                                type="text"
+                                placeholder="email/social"
+                                value={profileData.email}
+                                onChange={(e) => handleInputChange("email", e.target.value)}
+                                onBlur={() => handleInputBlur("email")}
+                                autoFocus
+                                className="profile-input"
+                            />
+                        ) : (
+                            <p>{profileData.email}</p>
+                        )}
+                        <button
+                            className="edit-button"
+                            onClick={() => handleEditClick("email")}
+                        >
+                            <img src="edit.png" alt="edit" />
+                        </button>
+                    </div>
+
                     <div className="profile-field">
                         {editingFields.city ? (
                             <input
                                 type="text"
+                                placeholder="city"
                                 value={profileData.city}
                                 onChange={(e) => handleInputChange("city", e.target.value)}
                                 onBlur={() => handleInputBlur("city")}
@@ -145,6 +170,7 @@ export default function Profile() {
                         {editingFields.state ? (
                             <input
                                 type="text"
+                                placeholder="state"
                                 value={profileData.state}
                                 onChange={(e) => handleInputChange("state", e.target.value)}
                                 onBlur={() => handleInputBlur("state")}
@@ -224,6 +250,12 @@ export default function Profile() {
                     </ol>
                 </div>
             </div>
+            <div className="bottom-buttons">
+              <button className="button-cancel" onClick={()=>{console.log('redirect'); redirect('/profile/');}}>Cancel</button>  
+              <button className="button-save" onClick={saveChanges}>Save</button>
+              {/* <button className="button-browse">Browse</button>
+              <button className="button-search">Search</button> */}
+          </div>
         </div>
     );
 }

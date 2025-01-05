@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { auth, db } from '../controllers/firebase'
-import { doc, setDoc, getDoc } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import { redirect } from 'next/navigation';
 import './styles.css'
 export default function Profile() {
@@ -11,7 +11,8 @@ export default function Profile() {
     const [hiked, setHiked] = useState([]);
     const [liked, setLiked] = useState([]);
     const [image, setImage] = useState("wolf.png");
-
+    const [email, setEmail] = useState('');
+    const [location, setLocation] = useState(null);
 
     async function fetchData() {
         console.log(auth.currentUser)
@@ -32,6 +33,8 @@ export default function Profile() {
             setHiked(user.hiked);
             setLiked(user.liked);
             setImage(user.image);
+            setEmail(user.email);
+            setLocation(user.location);
 
         } else {
             // docSnap.data() will be undefined in this case
@@ -58,27 +61,13 @@ export default function Profile() {
   
 
   return (
-    // <div>
-    //     <h2>Name {name}</h2>
-    //     <p>email/social</p>
-    //     <h2>Past Hikes</h2>
-    //     <img src={image} alt=""/>
-    //     <div>
-    //         <ol>
-
-    //         {hiked.map((hike, index)=>(
-    //             <li key={index}>{hike}</li>
-    //         ))}
-    //         </ol>
-    //     </div>
-
-    // </div>
       <div className="profile-container">
           <div className="profile-left">
               <img className="profile-avatar" src={image} alt="Avatar" />
               <h2>{name}</h2>
-              <p>Email/Social</p>
-              <p>{city}, {state}</p>
+              {email && <p>{email}</p>}
+              {(city || state) && <p>{city}{city && state && ', '}{state}</p>}
+
           </div>
           <div className="profile-right">
               <div className="profile-header">
@@ -104,7 +93,7 @@ export default function Profile() {
           <div className="bottom-buttons">
               <button className="button-edit" onClick={()=>{console.log("edit"); redirect("/settings");}}>Edit Profile</button>
               <button className="button-browse">Browse</button>
-              <button className="button-search">Search</button>
+              <button className="button-search" onClick={()=>{location && redirect("/search/" + location.lat + "/" + location.lng);}}>Search</button>
           </div>
       </div>
   );
