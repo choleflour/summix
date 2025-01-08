@@ -17,14 +17,16 @@
 }
 
 .submit-button {
-    width: 30%;
+    width: 50%;
     padding: 10px;
+    font-size: 16px;
     background-color: #78A378;
     color: #FFFFFF;
     border: none;
     cursor: pointer;
     border-radius: 20px;
-    margin-top: 20px;
+    margin-top: 40px;
+    align-items: center;
 }
 
 .centeredContainer {
@@ -35,7 +37,36 @@
     padding: 20px;
 }
 
+.location-button {
+  width: 100%;
+  padding: 6px;
+  background-color: #d0d0d0;
+  color: #373737;
+  cursor: pointer;
+  border-radius: 12px;
+  font-size: 12px;
+  transition: background-color 0.3s ease;
 
+  border: 1px solid #a9a9a9;  /* Light gray border */
+  border-style: solid;  /* Ensures consistent border style */
+  outline: none;
+}
+
+.location-button:hover {
+  background-color: #c9c9c9;
+}
+
+.location-button:active {
+  background-color: #c9c9c9;
+  transform: scale(0.98);
+}
+
+.submit-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
 /* Center the loader */
 #loader {
     position: absolute;
@@ -85,3 +116,5 @@
     display: none;
     text-align: center;
   }
+
+

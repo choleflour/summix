@@ -19,8 +19,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={inter.className}>
       <body>
-        {(pathname !== '/' && pathname !== '/login') && <Navbar />}
+        <div style={{ padding: 0, margin: 0 }}>
+        {(pathname !== '/' && pathname !== '/login' && pathname !== '/preferences' && pathname !== '/create' ) && <Navbar />}
         {children}
+        </div>
+        
       </body>
     </html>
   )

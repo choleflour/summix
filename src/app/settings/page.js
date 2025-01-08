@@ -1,11 +1,9 @@
 "use client";
 import { useState, useEffect } from "react";
 import { auth, db } from '../controllers/firebase'
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { redirect } from 'next/navigation';
 import './styles.css'
-
-
 
 export default function Settings() {
     const [profileData, setProfileData] = useState({
@@ -18,6 +16,7 @@ export default function Settings() {
         email: "",
     });
 
+    const [originalData, setOriginalData] = useState({}); // Store original data to compare changes
     const [editingFields, setEditingFields] = useState({}); // Tracks which fields are being edited
 
     const handleEditClick = (field) => {
@@ -38,6 +37,7 @@ export default function Settings() {
             hiked: prev.hiked.filter((_, i) => i !== index),
         }));
     };
+
     const handleDeleteLike = (index) => {
         setProfileData((prev) => ({
             ...prev,
@@ -67,12 +67,20 @@ export default function Settings() {
                 image: user.image,
                 email: user.email,
             });
+
+            setOriginalData({
+                name: user.name,
+                city: user.city,
+                state: user.state,
+                hiked: user.hiked,
+                liked: user.liked,
+                image: user.image,
+                email: user.email,
+            });
         } else {
             alert("no user info!");
         }
     }
-
-    
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -86,13 +94,25 @@ export default function Settings() {
     }, []);
 
     async function saveChanges() {
-        // const { name, city, state, hiked, liked, image } = profileData;
-        try {
-            await setDoc(doc(db, "users", auth.currentUser.uid), profileData);
-        } catch (error) {
-            console.error("Error writing document: ", error);
+        const changes = {};
+        for (const key in profileData) {
+            if (profileData[key] !== originalData[key]) {
+                changes[key] = profileData[key];
+            }
         }
-        
+
+        if (Object.keys(changes).length === 0) {
+            // alert("No changes to save.");
+            return;
+        }
+
+        try {
+            await updateDoc(doc(db, "users", auth.currentUser.uid), changes);
+            // alert("Changes saved successfully!");
+        } catch (error) {
+            console.error("Error updating document: ", error);
+        }
+
         let redirectUrl = "/profile";
         redirect(redirectUrl);
     }
@@ -256,10 +276,6 @@ export default function Settings() {
                     </ol>
                 </div>
             </div>
-            {/* <div className="bottom-buttons">
-              <button className="button-cancel" onClick={()=>{redirect('/profile/');}}>Cancel</button>  
-              <button className="button-save" onClick={saveChanges}>Save</button>
-          </div> */}
         </div>
     );
 }

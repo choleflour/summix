@@ -1,18 +1,77 @@
 import Link from 'next/link';
-
+import {useState, useEffect} from 'react';
+import { auth, db } from '../controllers/firebase'
+import { doc, getDoc } from "firebase/firestore";
+import { getAuth, signOut } from "firebase/auth";
+import Logo from '../../../public/trees.svg';
 const Navbar = () => {
+  const [userloc, setUserloc] = useState(null);
+  async function fetchLoc() {
+    if (!auth.currentUser?.uid) {
+      alert('not signed in');
+      return;
+    }
+    try {
+      const docRef = await getDoc(doc(db, "users", auth.currentUser.uid));
+      if (docRef.exists()) {
+        const user = docRef.data();
+        setUserloc(user.location);
+      } else {
+        return;
+      }
+
+    } catch (error) {
+      console.log(error);
+    }
+      
+  }
+
+  async function logout() {
+    const auth = getAuth();
+    signOut(auth).then(() => {
+      alert("sign-out successful");
+      // window.location.href = '/login';
+    }).catch((error) => {
+      console.error(error);
+    });
+  }
+  
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        console.log("User signed in:", user);
+        fetchLoc(); // Fetch location after user is confirmed
+      } else {
+        console.log("No user signed in.");
+      }
+    });
+
+    // Cleanup the auth listener on component unmount
+    return () => unsubscribe();
+  }, []);
+
   return (
     <nav style={styles.navbar}>
-      <div style={styles.logo}>MyApp</div>
+      <div>
+      <Link href='/' style={styles.link}>
+      
+      {/* <a href="/" style={styles.link}> */}
+      <Logo style={styles.logo} />
+      {/* </a> */}
+      </Link>
+      
+      </div>
+
       <div style={styles.links}>
-        <Link href="/" style={styles.link}>
-          Home
-        </Link>
-        <Link href="/profile" style={styles.link}>
+      <a href="/profile" style={styles.link}>
           Profile
-        </Link>
-        <Link href="/preferences" style={styles.link}>
+        </a>  
+        {userloc && <a href={`/search/${userloc.lat}/${userloc.lng}`} style={styles.link}>
           Search
+        </a> }
+        <Link href="/" style={styles.link} onClick={logout}>
+          Logout
         </Link>
       </div>
     </nav>
@@ -34,9 +93,13 @@ const styles = {
     zIndex: 1000, // Keeps it on top of all content
   },
   logo: {
-    fontSize: '1.5rem',
-    fontWeight: 'bold',
-    color: '#2c3e50', // Matches the dark text theme
+    // fontSize: '1.5rem',
+    // fontWeight: 'bold',
+    // color: '#2c3e50', // Matches the dark text theme
+    width: '48px',
+    height :'48px',
+
+
   },
   links: {
     display: 'flex',
@@ -55,4 +118,3 @@ const styles = {
 };
 
 export default Navbar;
-// logo, profile, search, signout, 

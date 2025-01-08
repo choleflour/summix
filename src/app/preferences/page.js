@@ -115,7 +115,7 @@ export default function PreferencesPage() {
                     </select>
 
                     <br /><br />
-                    Where are you hiking?
+                    Where do you live?
                     <br />
                     <input
                         type="text"
@@ -125,9 +125,6 @@ export default function PreferencesPage() {
                             setCity(e.target.value);
                         }}
                     />
-                    <br /><br />
-                    <button onClick={getLocation}>Use My Location</button>
-
                     <br />
                     <select onChange={function (e) {
                         setState(e.target.value);
@@ -185,7 +182,13 @@ export default function PreferencesPage() {
                         <option value='Wyoming'>Wyoming</option>
                     </select>
                 </p>
+
+                <button className="location-button" onClick={getLocation}>Use My Location</button>
+                <br />
+                <div className="submit-container">
                 <button className="submit-button" onClick={submit}>Submit</button>
+                </div>
+                
                 
             </div>
 

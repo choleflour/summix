@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect, useRef } from "react";
-import { doc, getDoc, setDoc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
+import { doc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import { auth, db } from '../../../controllers/firebase'
 import LikeIcon from '../../../../../public/like.svg';
 import SaveIcon from '../../../../../public/save.svg';
@@ -11,8 +11,8 @@ import './styles.css';
 import PopupModal  from "./PopupModal";
 export const Renderer = ({userLocation }) => {
     const [results, setResults] = useState([]);
-    const [liked, setLiked] = useState(false);
-    const [hiked, setHiked] = useState(false);
+    // const [liked, setLiked] = useState(false);
+    // const [hiked, setHiked] = useState(false);
     const mapRef = useRef(null); // Create a ref for the map container
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [selectedResults, setSelectedResults] = useState(null);
@@ -109,6 +109,9 @@ export const Renderer = ({userLocation }) => {
     };
 
     useEffect(() => {
+        const mapInstanceRef = { current: null }; // Reference for map instance
+        const markersRef = []; // Keep track of markers to clean them up
+    
         const loadGoogleMaps = () => {
             const existingScript = document.querySelector(
                 `script[src*="https://maps.googleapis.com/maps/api/js"]`
@@ -117,7 +120,7 @@ export const Renderer = ({userLocation }) => {
                 initializeMap();
                 return;
             }
-
+    
             const script = document.createElement("script");
             const apiKey = process.env.NEXT_PUBLIC_API_KEY;
             script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&v=weekly`;
@@ -126,15 +129,19 @@ export const Renderer = ({userLocation }) => {
             script.onload = initializeMap;
             document.head.appendChild(script);
         };
-
+    
         const initializeMap = () => {
             if (!mapRef.current || !window.google) return;
-
+    
+            // Initialize the map instance
             const map = new window.google.maps.Map(mapRef.current, {
                 center: userLocation || { lat: 37.7749, lng: -122.4194 },
                 zoom: 12,
             });
-
+    
+            // Save map instance for cleanup
+            mapInstanceRef.current = map;
+    
             results.forEach((result) => {
                 if (result.geometry.location) {
                     const marker = new window.google.maps.Marker({
@@ -145,23 +152,54 @@ export const Renderer = ({userLocation }) => {
                         map,
                         title: result.name,
                     });
-
+    
+                    // Save marker for cleanup
+                    markersRef.push(marker);
+    
                     // Open modal on marker click
-                    google.maps.event.addListener(marker, "click", () => {
+                    const handleMarkerClick = () => {
                         setSelectedResults(result);
                         setIsModalVisible(true);
-                    });
+                    };
+                    marker.addListener("click", handleMarkerClick);
+    
+                    // Save the listener for cleanup
+                    marker.listener = handleMarkerClick;
                 }
             });
         };
-
+    
         if (results.length > 0) {
             loadGoogleMaps();
             populateData(); // init
         }
+    
+        // Cleanup function
+        return () => {
+            // Remove markers and their listeners
+            markersRef.forEach((marker) => {
+                if (marker.listener) {
+                    google.maps.event.clearInstanceListeners(marker);
+                }
+                marker.setMap(null); // Remove the marker from the map
+            });
+    
+            // Clear the map instance
+            if (mapInstanceRef.current) {
+                google.maps.event.clearInstanceListeners(mapInstanceRef.current);
+                mapInstanceRef.current = null;
+            }
+    
+            // Remove the script if dynamically loaded
+            const existingScript = document.querySelector(
+                `script[src*="https://maps.googleapis.com/maps/api/js"]`
+            );
+            if (existingScript && !document.querySelectorAll('script[src*="https://maps.googleapis.com"]').length) {
+                existingScript.remove();
+            }
+        };
     }, [results, userLocation]);
     
-
     return (
         <div>
 
@@ -210,7 +248,7 @@ export const Renderer = ({userLocation }) => {
             
             
             </div>
-            <a href='/preferences' className="backButton" >Back </a>
+            {/* <a href='/preferences' className="backButton" >Back </a> */}
             
 
         </div>

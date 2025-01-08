@@ -1,5 +1,5 @@
 'use client';
-
+import PopupModal from "./PopupModal";
 import { useState, useEffect, useRef } from "react";
 import './styles.css';
 
