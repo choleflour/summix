@@ -1,16 +1,47 @@
 'use client';
-
 import { useState, useEffect, useRef } from "react";
+import { doc, getDoc, setDoc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
+import { auth, db } from '../../../controllers/firebase'
+import LikeIcon from '../../../../../public/like.svg';
+import SaveIcon from '../../../../../public/save.svg';
+
 import './styles.css';
 // named export uses {name} doesn't have default just export name
 // import default from the file
 import PopupModal  from "./PopupModal";
 export const Renderer = ({userLocation }) => {
     const [results, setResults] = useState([]);
-
+    const [liked, setLiked] = useState(false);
+    const [hiked, setHiked] = useState(false);
     const mapRef = useRef(null); // Create a ref for the map container
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [selectedResults, setSelectedResults] = useState(null);
+
+    async function populateData() {
+        if (!auth.currentUser?.uid) {
+            alert("hey! stop! u gotta sign in!!!");
+            window.location.href = '/';
+        }
+
+    }
+    async function addLike(hike) {
+        const docRef = doc(db, "users", auth.currentUser.uid);
+        // setLiked((prevLiked) => [...prevLiked, hike]);
+        await updateDoc(docRef, {
+            liked: arrayUnion(hike)
+        });
+
+    }
+
+    async function addHike(hike) {
+        const docRef = doc(db, "users", auth.currentUser.uid);
+        await updateDoc(docRef, {
+            hiked: arrayUnion(hike)
+        });
+
+    }
+
+        
 
     const handleSortChange = (e) => {
         const selectedOption = e.target.value;
@@ -126,6 +157,7 @@ export const Renderer = ({userLocation }) => {
 
         if (results.length > 0) {
             loadGoogleMaps();
+            populateData(); // init
         }
     }, [results, userLocation]);
     
@@ -162,6 +194,17 @@ export const Renderer = ({userLocation }) => {
                     {e.image && (
                         <img className="image" src={e.image} alt={`${e.name} image`} />
                     )}
+                    <button className="like-button" onClick={() => addLike(e.name)} >
+                    {/* <img src="/like.png" alt="like" /> */}
+                    <LikeIcon width={24} height={24} />
+
+
+                    </button>
+                    <button className="save-button" onClick={()=>addHike(e.name)}> 
+                    {/* <img src="/save.png" alt="save" /> */}
+                    <SaveIcon width={24} height={24} />
+
+                    </button>
                 </a>
             ))}
             

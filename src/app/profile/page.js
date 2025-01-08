@@ -67,11 +67,15 @@ export default function Profile() {
               <h2>{name}</h2>
               {email && <p>{email}</p>}
               {(city || state) && <p>{city}{city && state && ', '}{state}</p>}
+            <div>
+            <button className="button-edit" onClick={()=>{redirect("/settings");}}>Edit Profile</button>
+            </div>
 
           </div>
+          
+          
+          
           <div className="profile-right">
-              <div className="profile-header">
-              </div>
               <div className="profile-hikes">
                   <h3>Past Hikes</h3>
                   <ol>
@@ -90,11 +94,11 @@ export default function Profile() {
                   </ol>
               </div>
           </div>
-          <div className="bottom-buttons">
+          {/* <div className="bottom-buttons">
               <button className="button-edit" onClick={()=>{console.log("edit"); redirect("/settings");}}>Edit Profile</button>
               <button className="button-browse">Browse</button>
               <button className="button-search" onClick={()=>{location && redirect("/search/" + location.lat + "/" + location.lng);}}>Search</button>
-          </div>
+          </div> */}
       </div>
   );
 }

@@ -7,7 +7,7 @@ import './styles.css'
 
 
 
-export default function Profile() {
+export default function Settings() {
     const [profileData, setProfileData] = useState({
         name: "",
         city: "",
@@ -48,6 +48,7 @@ export default function Profile() {
     async function fetchData() {
         if (!auth.currentUser?.uid) {
             alert("hey! stop! u gotta sign in!!!");
+            window.location.href = '/';
             return;
         }
 
@@ -188,6 +189,11 @@ export default function Profile() {
                         </button>
                     </div>
                 </div>
+                <div className="control-buttons">
+                <button className="button-cancel" onClick={()=>{redirect('/profile/');}}>Cancel</button>  
+                <button className="button-save" onClick={saveChanges}>Save</button>
+                </div>
+                
             </div>
     
             <div className="profile-right">
@@ -250,12 +256,10 @@ export default function Profile() {
                     </ol>
                 </div>
             </div>
-            <div className="bottom-buttons">
-              <button className="button-cancel" onClick={()=>{console.log('redirect'); redirect('/profile/');}}>Cancel</button>  
+            {/* <div className="bottom-buttons">
+              <button className="button-cancel" onClick={()=>{redirect('/profile/');}}>Cancel</button>  
               <button className="button-save" onClick={saveChanges}>Save</button>
-              {/* <button className="button-browse">Browse</button>
-              <button className="button-search">Search</button> */}
-          </div>
+          </div> */}
         </div>
     );
 }

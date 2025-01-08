@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@svgr/webpack": "^8.1.0",
     "@syncfusion/ej2-react-dropdowns": "^27.1.58",
     "firebase": "^11.0.1",
     "next": "15.0.3",
