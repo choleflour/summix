@@ -4,7 +4,7 @@ import {auth} from "./firebase";
 
 
 export function signUp(userEmail, userPass) {
-    console.log(userEmail);
+    // console.log(userEmail);
 
     if(!userEmail.length) {
       return;
@@ -55,7 +55,7 @@ export function signUp(userEmail, userPass) {
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/auth.user
         const uid = user.uid;
-        console.log(uid);
+        // console.log(uid);
         // ...
       } else {
         // User is signed out

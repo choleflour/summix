@@ -33,7 +33,7 @@ export default function PreferencesPage() {
     }
 
     async function submit() {
-        console.log(auth.currentUser);
+        // console.log(auth.currentUser);
         if (!auth.currentUser?.uid) {
             alert('hey! stop! u gotta sign in!!!');
             return;
@@ -77,7 +77,6 @@ export default function PreferencesPage() {
                     setIsLoading(false); // Stop loader
                     window.location.href = redirectUrl; // Perform redirection
                 } catch (error) {
-                    console.log("ERR", error);
                     console.error("Error during Firestore operation:", error);
                     alert("Error submitting data. Please try again.");
                     setIsLoading(false); // Stop loader even on error

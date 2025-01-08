@@ -12,7 +12,6 @@ export const Renderer = ({city}) => {
         fetch("http://127.0.0.1:5000/?location=" + city)
             .then((response) => response.json())
             .then((response) => {
-                console.log("Yelp API Response", response);
                 let trails = response.businesses;
                 setBusinesses(trails);
             });

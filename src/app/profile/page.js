@@ -15,7 +15,7 @@ export default function Profile() {
     const [location, setLocation] = useState(null);
 
     async function fetchData() {
-        console.log(auth.currentUser)
+        // console.log(auth.currentUser)
         if (!auth.currentUser?.uid) {
             alert('hey! stop! u gotta sign in!!!');
             return;

@@ -64,8 +64,6 @@ export const Renderer = ({userLocation }) => {
         fetch(`http://127.0.0.1:5000/?lat=${userLocation.lat}&lng=${userLocation.lng}`)
           .then((response) => response.json())
           .then((response) => {
-            console.log('GoogleMaps API Response', response);
-
             const resultsWithDistance = response.results.map((result) => {
               if (userLocation && result.geometry.location) {
                 result.distance = calculateDistance(
