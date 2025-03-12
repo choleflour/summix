@@ -1,4 +1,5 @@
 # Summix
+
 ## What it does
 Our website, Summix, allows hiking enthusiasts to find the best hikes near them quickly and efficiently. The user simply needs to create an account, login, and enter the city and state they live in, and Summix returns a comprehensive list of hikes near them. This list includes the hike’s name, an image of the location, the hike’s rating, and how far (in miles) the hike is from the user’s current location.
 
@@ -26,6 +27,15 @@ bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result. Make sure to run the Flask backend as well to retrieve data from the API.
+
+Demo: 
+
+
+![photo](demo1.png)
+![photo](demo2.png)
+![photo](demo3.png)
+
+https://youtu.be/8nCLL-kG2Rs
 
 Deployed the app on Vercel: summix-git-main-chloe-changs-projects.vercel.app
 
