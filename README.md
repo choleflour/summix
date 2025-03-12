@@ -26,3 +26,9 @@ bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result. Make sure to run the Flask backend as well to retrieve data from the API.
+
+Deployed the app on Vercel: summix-git-main-chloe-changs-projects.vercel.app
+
+Note: I disabled Google Maps API because it started charging me
+
+
