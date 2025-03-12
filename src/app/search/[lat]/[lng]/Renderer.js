@@ -3,7 +3,9 @@ import { useState, useEffect, useRef } from "react";
 import { doc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import { auth, db } from '../../../controllers/firebase'
 import LikeIcon from '../../../../../public/like.svg';
+import LikeHoverIcon from '../../../../../public/like-hover.svg';
 import SaveIcon from '../../../../../public/save.svg';
+import SaveHoverIcon from '../../../../../public/save-hover.svg';
 
 import './styles.css';
 // named export uses {name} doesn't have default just export name
@@ -230,17 +232,21 @@ export const Renderer = ({userLocation }) => {
                     {e.image && (
                         <img className="image" src={e.image} alt={`${e.name} image`} />
                     )}
-                    <button className="like-button" onClick={() => addLike(e.name)} >
-                    {/* <img src="/like.png" alt="like" /> */}
-                    <LikeIcon width={24} height={24} />
-
-
+                    <button className="like-button" onClick={() => addLike(e.name)}>
+                        <span className="icon-container">
+                            <LikeIcon className="like-icon" width={24} height={24} />
+                            <LikeHoverIcon className="like-hover-icon" width={24} height={24} />
+                        </span>
                     </button>
-                    <button className="save-button" onClick={()=>addHike(e.name)}> 
-                    {/* <img src="/save.png" alt="save" /> */}
-                    <SaveIcon width={24} height={24} />
 
+                    <button className="save-button" onClick={() => addHike(e.name)}>
+                    <span className="icon-container">
+                            <SaveIcon className="like-icon" width={24} height={24} />
+                            <SaveHoverIcon className="like-hover-icon" width={24} height={24} />
+                    </span>
+                        {/* <SaveIcon width={24} height={24} /> */}
                     </button>
+
                 </a>
             ))}
             

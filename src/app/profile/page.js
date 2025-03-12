@@ -88,7 +88,7 @@ export default function Profile() {
               <div className="profile-hikes">
                   <h3>Want to Go</h3>
                   <ol>
-                      {liked.map((like, index) => (
+                      {liked && liked.map((like, index) => (
                           <li key={index}>{like}</li>
                       ))}
                   </ol>

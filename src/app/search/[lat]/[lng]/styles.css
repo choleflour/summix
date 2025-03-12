@@ -252,10 +252,59 @@
    transform: scale(1.2); /* Slight zoom effect on hover */
 }
 
+/* Container for buttons to align them horizontally */
 .like-button,
 .save-button {
-   border: none;
-   padding: 0;
-   cursor: pointer;
-   background-color: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  background-color: transparent;
+  display: inline-flex; /* Ensures buttons stay in one line */
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 24px; /* Ensures no shifting */
+  height: 24px;
 }
+
+/* Wraps both icons to ensure they stay in place */
+.icon-container {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Default icon */
+.like-icon {
+  display: block;
+  position: absolute;
+}
+
+/* Hover icon */
+.like-hover-icon {
+  display: none;
+  position: absolute;
+}
+
+/* Swap icons on hover */
+.like-button:hover .like-icon {
+  display: none;
+}
+
+.like-button:hover .like-hover-icon {
+  display: block;
+}
+
+
+/* save */
+/* Swap icons on hover */
+.save-button:hover .like-icon {
+   display: none;
+ }
+ 
+ .save-button:hover .like-hover-icon {
+   display: block;
+ }
